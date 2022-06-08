@@ -303,28 +303,10 @@
         }
 
         #endregion
-        //private System.Windows.Forms.ToolStripMenuItem dateiMenu;
-        //private System.Windows.Forms.ToolStripMenuItem ansichtMenu;
-        //private System.Windows.Forms.ToolStripMenuItem beendenToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripMenuItem maschineHinzufügenToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripMenuItem maschineBearbeitenToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripMenuItem maschineLöschenToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripMenuItem maschineSuchenToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripMenuItem listeSpeichernUnterToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripMenuItem alleListenToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripMenuItem aktuelleListeToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripMenuItem extrasToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripMenuItem aufUpdatesPrüfenToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripMenuItem hilfeToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripMenuItem infoAnzeigenToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripMenuItem speichernToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_AnzahlMaschinen;
         private System.Windows.Forms.StatusStrip statusStrip;
-        //private System.Windows.Forms.ToolStripButton toolStripButtonMaschineSuchen;
         private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        
         private System.Windows.Forms.FontDialog fontDialog;
         private System.Windows.Forms.ToolStripMenuItem dateiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loginToolStripMenuItem;
@@ -345,17 +327,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_AnzahlMaschinen;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelEingeloggt;
-        //private System.Windows.Forms.ToolStripMenuItem schriftartToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripComboBox toolStripComboBoxMaschinenListe;
-        //private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        //private System.Windows.Forms.ToolStripButton toolStripButtonMaschineHinzufügen;
-        //private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        //private System.Windows.Forms.ToolStripButton toolStripButtonRefresh;
-        //private System.Windows.Forms.ToolStripMenuItem loginToolStripMenuItem;
-        //private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelEingeloggt;
-        //private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
-        //private System.Windows.Forms.ToolStripButton toolStripButtonDayNightMode;
-        //private System.Windows.Forms.MenuStrip menuStrip;
     }
 }
 
