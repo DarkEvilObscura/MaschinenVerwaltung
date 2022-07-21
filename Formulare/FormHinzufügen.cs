@@ -95,13 +95,13 @@ namespace MaschinenVerwaltung
                     options.ForeColor = Color.Black;
                 }
 
-                if(typ==string.Empty && gerätenummer==string.Empty && originalnummer == string.Empty && bemerkung == string.Empty && tüv == DateTime.MinValue && nichtVorhanden==false)
+                if(typ == string.Empty && gerätenummer == string.Empty && originalnummer == string.Empty && bemerkung == string.Empty && tüv == DateTime.MinValue && nichtVorhanden == false)
                 {
                     continue;
                 }
                 else
                 {
-                    Datensatz datensatz = new Datensatz(0, typ, gerätenummer, originalnummer, bemerkung, tüv, nichtVorhanden, options);
+                    Datensatz datensatz = new Datensatz(0, typ, gerätenummer, originalnummer, bemerkung, tüv, nichtVorhanden, options, string.Empty);
                     this.datensätze.Add(datensatz);
                 }
             }

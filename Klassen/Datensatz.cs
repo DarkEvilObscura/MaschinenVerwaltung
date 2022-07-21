@@ -12,8 +12,9 @@ namespace MaschinenVerwaltung
         public DateTime TÜV { get; set; }
         public bool NichtVorhanden { get; set; }
         public Options Options { get; set; }
+        public string Wartungsprotokoll { get; set; }
 
-        public Datensatz(int id, string typ, string gerätenummer, string originalnummer, string bemerkung, DateTime tüv, bool nichtVorhanden, Options options)
+        public Datensatz(int id, string typ, string gerätenummer, string originalnummer, string bemerkung, DateTime tüv, bool nichtVorhanden, Options options, string wartungsprotokoll)
         {
             this.Id = id;
             this.Typ = typ;
@@ -23,6 +24,7 @@ namespace MaschinenVerwaltung
             this.TÜV = tüv;
             this.NichtVorhanden = nichtVorhanden;
             this.Options = options;
+            this.Wartungsprotokoll = wartungsprotokoll;
         }
     }
 }

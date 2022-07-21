@@ -49,6 +49,7 @@
             this.toolStripButtonMaschineHinzufügen = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonMaschineSuchen = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonRefresh = new System.Windows.Forms.ToolStripButton();
+            this.toolStripTextBoxSearch = new System.Windows.Forms.ToolStripTextBox();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel_AnzahlMaschinen = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -187,7 +188,8 @@
             this.toolStripSeparator1,
             this.toolStripButtonMaschineHinzufügen,
             this.toolStripButtonMaschineSuchen,
-            this.toolStripButtonRefresh});
+            this.toolStripButtonRefresh,
+            this.toolStripTextBoxSearch});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(894, 25);
@@ -247,6 +249,19 @@
             this.toolStripButtonRefresh.Size = new System.Drawing.Size(95, 22);
             this.toolStripButtonRefresh.Text = "Aktualisieren";
             this.toolStripButtonRefresh.Click += new System.EventHandler(this.toolStripButtonRefresh_Click);
+            // 
+            // toolStripTextBoxSearch
+            // 
+            this.toolStripTextBoxSearch.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripTextBoxSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.toolStripTextBoxSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.toolStripTextBoxSearch.Name = "toolStripTextBoxSearch";
+            this.toolStripTextBoxSearch.Size = new System.Drawing.Size(150, 25);
+            this.toolStripTextBoxSearch.Text = "Suchbegriff";
+            this.toolStripTextBoxSearch.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toolStripTextBoxSearch.Visible = false;
+            this.toolStripTextBoxSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.toolStripTextBoxSearch_KeyPress);
+            this.toolStripTextBoxSearch.TextChanged += new System.EventHandler(this.toolStripTextBoxSearch_TextChanged);
             // 
             // statusStrip
             // 
@@ -327,6 +342,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_AnzahlMaschinen;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelEingeloggt;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBoxSearch;
     }
 }
 

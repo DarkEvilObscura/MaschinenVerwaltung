@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -91,8 +92,19 @@ namespace MaschinenVerwaltung
 
         private void LoadDatabase()
         {
-            this.dbVerwaltung = new DatenbankVerwaltung();
-            this.dbVerwaltung.Open(Application.StartupPath + @"\Maschinen.db");
+            string file = Application.StartupPath + @"\Maschinen.db";
+            bool dbExists = File.Exists(file);
+
+            if(dbExists)
+            {
+                this.dbVerwaltung = new DatenbankVerwaltung();
+                this.dbVerwaltung.Open(file);
+            }
+            else
+            {
+                MessageBox.Show("Fehler:\nDie Datei: Maschinen.db konnte nicht gefunden werden !\n\nDas Programm wird beendet.", "MaschinenVerwaltung", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
         }
 
         private void InitTables()
@@ -130,13 +142,23 @@ namespace MaschinenVerwaltung
         private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             DataGridView grid = (DataGridView)sender;
+
             if (grid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
                 int rowindex = this.dataGridView.CurrentCell.RowIndex;
                 int datensatzId = (int)this.dataGridView.Rows[rowindex].Cells[0].Value;
                 Datensatz datensatz = this.dbVerwaltung.GetSingleDatensatz(datensatzId);
 
-                if (e.ColumnIndex == 8) //Bearbeiten
+                if (e.ColumnIndex == 8) //Wartungsprotokoll
+                {
+                    FormWartungsprotokoll formWartungsprotokoll = new FormWartungsprotokoll(datensatz, this.login);
+                    formWartungsprotokoll.ShowDialog();
+                    if (formWartungsprotokoll.NewDatensatz != null)
+                    {
+                        dbVerwaltung.Update(datensatz, formWartungsprotokoll.NewDatensatz);
+                    }
+                }
+                else if (e.ColumnIndex == 9) //Bearbeiten
                 {
                     FormBearbeiten formBearbeiten = new FormBearbeiten(datensatz);
                     formBearbeiten.ShowDialog();
@@ -146,7 +168,7 @@ namespace MaschinenVerwaltung
                         RefreshButton();
                     }
                 }
-                else if (e.ColumnIndex == 9) //Löschen
+                else if(e.ColumnIndex == 10) //Löschen
                 {
                     DialogResult msg = MessageBox.Show("Möchten Sie diese Maschine wirklich löschen ?\n\nTyp: " + datensatz.Typ + "\nGerätenummer: " + datensatz.Gerätenummer + "\nOriginalnummer: " + datensatz.Originalnummer + "\nBemerkung: " + datensatz.Bemerkung + "\nTÜV:" + datensatz.TÜV, "Maschine löschen ?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (msg == DialogResult.Yes)
@@ -193,7 +215,7 @@ namespace MaschinenVerwaltung
 
             Utils.DataGridViewSetupColumnAlignment(ref this.dataGridView);
             Utils.DataGridViewSetupColumnWidth(ref this.dataGridView, (int)USettings.GetSystemFontStyle().Size);
-            Utils.DataGridViewSetupColumnVisible(ref this.dataGridView, (toolStripComboBoxMaschinenListe.SelectedIndex == 11));
+            Utils.DataGridViewSetupColumnVisible(ref this.dataGridView, (toolStripComboBoxMaschinenListe.SelectedIndex == 11), this.login);
         }
 
         private void maschineSuchenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -284,25 +306,32 @@ namespace MaschinenVerwaltung
 
         private void dataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            if (this.login)
+            if (e.RowIndex < 0)
             {
-                if (e.RowIndex < 0)
+                return;
+            }
+
+            if (e.ColumnIndex == 8 || e.ColumnIndex == 9 || e.ColumnIndex == 10)
+            {
+                e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+                int w = 16; //int w = (e.ColumnIndex == 8) ? Properties.Resources.edit.Width : Properties.Resources.delete.Width;
+                int h = 16; //int h = (e.ColumnIndex == 8) ? Properties.Resources.edit.Height : Properties.Resources.delete.Height;
+                int x = e.CellBounds.Left + (e.CellBounds.Width - w) / 2;
+                int y = e.CellBounds.Top + (e.CellBounds.Height - h) / 2;
+
+                switch (e.ColumnIndex)
                 {
-                    return;
+                    case 8:
+                        e.Graphics.DrawImage(Properties.Resources.notebook, new Rectangle(x, y, w, h));
+                        break;
+                    case 9:
+                        e.Graphics.DrawImage(Properties.Resources.edit, new Rectangle(x, y, w, h));
+                        break;
+                    case 10:
+                        e.Graphics.DrawImage(Properties.Resources.delete, new Rectangle(x, y, w, h));
+                        break;
                 }
-
-                if (e.ColumnIndex == 8 || e.ColumnIndex == 9)
-                {
-                    e.Paint(e.CellBounds, DataGridViewPaintParts.All);
-
-                    int w = (e.ColumnIndex == 8) ? Properties.Resources.edit.Width : Properties.Resources.delete.Width;
-                    int h = (e.ColumnIndex == 8) ? Properties.Resources.edit.Height : Properties.Resources.delete.Height;
-                    int x = e.CellBounds.Left + (e.CellBounds.Width - w) / 2;
-                    int y = e.CellBounds.Top + (e.CellBounds.Height - h) / 2;
-
-                    e.Graphics.DrawImage((e.ColumnIndex == 8) ? Properties.Resources.edit : Properties.Resources.delete, new Rectangle(x, y, w, h));
-                    e.Handled = true;
-                }
+                e.Handled = true;
             }
         }
 
@@ -326,7 +355,7 @@ namespace MaschinenVerwaltung
             //http://connect.microsoft.com/VisualStudio/feedback/details/120007/datagridview-sort-looses-cell-backcolor
 
             /*
-             Thank you for your bug report. The behavior you notice is by design.
+            Thank you for your bug report. The behavior you notice is by design.
             Sorting a databound grid causes all rows to be recreated (called a ListChangedType.Reset).
             This causes your formatting to be lost. You need to use the DataBindingComplete event to apply
             styles and check for the ListChangedType.Reset to know when to apply your styling. Alternatively
@@ -356,7 +385,7 @@ namespace MaschinenVerwaltung
             {
                 Utils.DataGridViewSetupColumnAlignment(ref this.dataGridView);
                 Utils.DataGridViewSetupColumnWidth(ref this.dataGridView, (int)USettings.GetSystemFontStyle().Size);
-                Utils.DataGridViewSetupColumnVisible(ref this.dataGridView, (toolStripComboBoxMaschinenListe.SelectedIndex == 11));
+                Utils.DataGridViewSetupColumnVisible(ref this.dataGridView, (toolStripComboBoxMaschinenListe.SelectedIndex == 11), this.login);
             }
         }
 
@@ -389,6 +418,16 @@ namespace MaschinenVerwaltung
                 }
             }
             RefreshButton();
+        }
+
+        private void toolStripTextBoxSearch_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void toolStripTextBoxSearch_TextChanged(object sender, EventArgs e)
+        {
+            (dataGridView.DataSource as DataTable).DefaultView.RowFilter = string.Format("Field = '{0}'", toolStripTextBoxSearch.Text);
         }
 
         //private void toolStripButtonDayNightMode_Click(object sender, EventArgs e)

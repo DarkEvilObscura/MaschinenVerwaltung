@@ -16,9 +16,9 @@ namespace MaschinenVerwaltung
             }
         }
 
-        public static void DataGridViewSetupColumnVisible(ref DataGridView dataGridView, bool showTyp = false)
+        public static void DataGridViewSetupColumnVisible(ref DataGridView dataGridView, bool showTyp = false, bool login = false)
         {
-            bool[] vs = new bool[10] {
+            bool[] vs = new bool[11] {
                 false,      //id
                 showTyp,    //Typ
                 true,       //Gerätenummer
@@ -27,8 +27,9 @@ namespace MaschinenVerwaltung
                 true,       //TÜV
                 true,       //Nicht Vorhanden
                 false,      //Options
-                true,       //Button: Bearbeiten
-                true        //Button: Löschen
+                true,       //Button: Wartungsprotokoll
+                login,      //Button: Bearbeiten
+                login       //Button: Löschen
             };
 
             for (int i = 0; i < /*vs.Length*/ dataGridView.Columns.Count; i++)
@@ -41,18 +42,19 @@ namespace MaschinenVerwaltung
         {
             int width = dataGridView.Size.Width;
 
-            int[] vs = new int[10] {
-                0,                                  //id
-                8*fontSize,                         //Typ (Default:64)
-                6*fontSize,                         //Gerätenummer (Default:48)
-                6*fontSize,                         //Originalnummer (Default:48)
-                (int)(width * 0.65),   //Bemerkung(Default: width*0.7) 
-                5*fontSize,                         //TÜV (Default:40)
-                5*fontSize,                         //Nicht Vorhanden (Default:40)
-                0,                                  //Options
-                3*fontSize,                         //Button: Bearbeiten (Default:24)
-                3*fontSize                          //Button: Löschen (Default:24)
-            };
+            //int[] vs = new int[11] {
+            //    0,                                  //id
+            //    8*fontSize,                         //Typ (Default:64)
+            //    6*fontSize,                         //Gerätenummer (Default:48)
+            //    6*fontSize,                         //Originalnummer (Default:48)
+            //    (int)(width * 0.65),   //Bemerkung(Default: width*0.7) 
+            //    5*fontSize,                         //TÜV (Default:40)
+            //    5*fontSize,                         //Nicht Vorhanden (Default:40)
+            //    0,                                  //Options
+            //    3*fontSize,                         //Button: Bearbeiten (Default:24)
+            //    3*fontSize,                         //Button: Löschen (Default:24)
+            //    3*fontSize                          //Button: Wartungsprotokoll
+            //};
 
             for (int i = 0; i < dataGridView.Columns.Count; i++)
             {
@@ -65,7 +67,7 @@ namespace MaschinenVerwaltung
                 {
                     dataGridView.Columns[i].Width = GetSize("01.0001", dataGridView.Font).Width;
                 }
-                else if(i==8 || i==9)
+                else if(i==8 || i==9 || i==10)
                 {
                     dataGridView.Columns[i].Width = GetSize("btn", dataGridView.Font).Width;
                 }
@@ -88,15 +90,22 @@ namespace MaschinenVerwaltung
             }
         }
 
-        public static void DataGridViewSetupAddButtons(ref DataGridView dataGridView)
+        public static void DataGridViewSetupAddButtons(ref DataGridView dataGridView, bool login)
         {
-            DataGridViewButtonColumn buttonBearbeitenColumn = new DataGridViewButtonColumn();
-            buttonBearbeitenColumn.Name = "";
-            dataGridView.Columns.Insert(8, buttonBearbeitenColumn);
+            DataGridViewButtonColumn buttonWartungsprotokollColumn = new DataGridViewButtonColumn();
+            buttonWartungsprotokollColumn.Name = "";
+            dataGridView.Columns.Insert(8, buttonWartungsprotokollColumn);
 
-            DataGridViewButtonColumn buttonLöschenColumn = new DataGridViewButtonColumn();
-            buttonLöschenColumn.Name = "";
-            dataGridView.Columns.Insert(9, buttonLöschenColumn);
+            if(login)
+            {
+                DataGridViewButtonColumn buttonBearbeitenColumn = new DataGridViewButtonColumn();
+                buttonBearbeitenColumn.Name = "";
+                dataGridView.Columns.Insert(9, buttonBearbeitenColumn);
+
+                DataGridViewButtonColumn buttonLöschenColumn = new DataGridViewButtonColumn();
+                buttonLöschenColumn.Name = "";
+                dataGridView.Columns.Insert(10, buttonLöschenColumn);
+            }
         }
 
         public static void DataGridViewSetupAddColor(ref DataGridView dataGridView)
@@ -120,14 +129,17 @@ namespace MaschinenVerwaltung
 
         public static void DataGridViewSetup(ref DataGridView dataGridView, int selectedIndex, bool login)
         {
-            if(selectedIndex!=11 && login)
-            {
-                DataGridViewSetupAddButtons(ref dataGridView);
-            }
+            //if(selectedIndex!=11 && login)
+            //{
+            //    DataGridViewSetupAddButtons(ref dataGridView, login);
+            //}
+
+            DataGridViewSetupAddButtons(ref dataGridView, login);
+
             DataGridViewSetupColumnAlignment(ref dataGridView);
             DataGridViewSetupColumnWidth(ref dataGridView, (int)USettings.GetSystemFontStyle().Size);
             DataGridViewSetupRowAlignment(ref dataGridView);
-            DataGridViewSetupColumnVisible(ref dataGridView, (selectedIndex==11));
+            DataGridViewSetupColumnVisible(ref dataGridView, (selectedIndex==11), login);
             DataGridViewSetupColumnSettings(ref dataGridView);
             DataGridViewSetupAddColor(ref dataGridView);
         }

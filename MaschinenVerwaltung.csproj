@@ -86,6 +86,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Formulare\FormWartungsprotokoll.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formulare\FormWartungsprotokoll.Designer.cs">
+      <DependentUpon>FormWartungsprotokoll.cs</DependentUpon>
+    </Compile>
     <Compile Include="Klassen\DoubleBufferDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -162,6 +168,9 @@
     <EmbeddedResource Include="Formulare\FormSuchen.resx">
       <DependentUpon>FormSuchen.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formulare\FormWartungsprotokoll.resx">
+      <DependentUpon>FormWartungsprotokoll.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -232,6 +241,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\notebook.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />

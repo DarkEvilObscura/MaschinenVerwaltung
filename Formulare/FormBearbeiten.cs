@@ -224,7 +224,7 @@ namespace MaschinenVerwaltung
         
         private void buttonSaveClose_Click(object sender, EventArgs e)
         {
-            Datensatz altDatensatz = new Datensatz(this.datensatz.Id, this.datensatz.Typ, this.datensatz.Gerätenummer, this.datensatz.Originalnummer, this.datensatz.Bemerkung, this.datensatz.TÜV, this.datensatz.NichtVorhanden, this.datensatz.Options);
+            Datensatz altDatensatz = new Datensatz(this.datensatz.Id, this.datensatz.Typ, this.datensatz.Gerätenummer, this.datensatz.Originalnummer, this.datensatz.Bemerkung, this.datensatz.TÜV, this.datensatz.NichtVorhanden, this.datensatz.Options, this.datensatz.Wartungsprotokoll);
             Datensatz neuDatensatz = EditDatensatz();
             //verwaltung.Update(altDatensatz, neuDatensatz);
             this.BearbeiteterDatensatz = neuDatensatz;
@@ -248,7 +248,7 @@ namespace MaschinenVerwaltung
             options.BackgroundColor = (pictureBoxBackgroundColor.BackColor != Color.White) ? pictureBoxBackgroundColor.BackColor : Color.White;
 
             //return new Datensatz(this.datensatz.Id, typ, gNr, oNr, bemerkung, tüv, checkBoxNichtVorhanden.Checked, options);
-            return new Datensatz(this.datensatz.Id, typ, gNr, oNr, bemerkung, DateTime.Parse(tüvCustom).Date, checkBoxNichtVorhanden.Checked, options);
+            return new Datensatz(this.datensatz.Id, typ, gNr, oNr, bemerkung, DateTime.Parse(tüvCustom).Date, checkBoxNichtVorhanden.Checked, options, this.datensatz.Wartungsprotokoll);
         }
         
     }

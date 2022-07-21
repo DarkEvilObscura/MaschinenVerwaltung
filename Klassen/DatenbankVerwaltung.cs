@@ -126,7 +126,7 @@ namespace MaschinenVerwaltung
         #region DML-Methoden
         public int Insert(Datensatz datensatz)
         {
-            string queryInsert = "INSERT INTO Maschinen(Typ, Gerätenummer, Originalnummer, Bemerkung, TÜV, NichtVorhanden, options) VALUES (@typ, @gerätenummer, @originalnummer, @bemerkung, @tüv, @nichtVorhanden, @options);";
+            string queryInsert = "INSERT INTO Maschinen(Typ, Gerätenummer, Originalnummer, Bemerkung, TÜV, NichtVorhanden, options) VALUES (@typ, @gerätenummer, @originalnummer, @bemerkung, @tüv, @nichtVorhanden, @options, @wartungsprotokoll);";
             this.sqLiteCommand = new SQLiteCommand(queryInsert, this.sqLiteConnection);
             this.sqLiteCommand.CommandType = CommandType.Text;
             this.sqLiteCommand.Parameters.AddWithValue("@typ", datensatz.Typ);
@@ -136,6 +136,7 @@ namespace MaschinenVerwaltung
             this.sqLiteCommand.Parameters.AddWithValue("@tüv", datensatz.TÜV.Date.ToString("yyyy-MM-01"));
             this.sqLiteCommand.Parameters.AddWithValue("@nichtVorhanden", (datensatz.NichtVorhanden) ? "1" : "0");
             this.sqLiteCommand.Parameters.AddWithValue("@options", new Options().SerializeOptions(datensatz.Options));
+            this.sqLiteCommand.Parameters.AddWithValue("@wartungsprotokoll", datensatz.Wartungsprotokoll);
 
             return this.sqLiteCommand.ExecuteNonQuery();
         }
@@ -176,6 +177,10 @@ namespace MaschinenVerwaltung
                 {
                     string xml = new Options().SerializeOptions(neuDatensatz.Options).Replace("\"", "\"\"");
                     updates += (updates.Length == 0 ? string.Empty : ", ") + $"options=\"{xml}\"";
+                }
+                if(altDatensatz.Wartungsprotokoll != neuDatensatz.Wartungsprotokoll)
+                {
+                    updates += (updates.Length == 0 ? string.Empty : ", ") + $"Wartungsprotokoll=\"{neuDatensatz.Wartungsprotokoll}\"";
                 }
 
                 if (updates != string.Empty)
@@ -269,7 +274,9 @@ namespace MaschinenVerwaltung
                     options.ForeColor = Color.Black;
                 }
 
-                return new Datensatz(id, typ, gerätenummer, originalnummer, bemerkung, tüv, nichtVorhanden, options);
+                string wartungsprotokoll = reader.IsDBNull(8) ? string.Empty : reader.GetString(8);
+
+                return new Datensatz(id, typ, gerätenummer, originalnummer, bemerkung, tüv, nichtVorhanden, options, wartungsprotokoll);
             }
             return null;
         }
@@ -441,7 +448,9 @@ namespace MaschinenVerwaltung
                     options.ForeColor = Color.Black;
                 }
 
-                Datensatz datensatz = new Datensatz(id, typ, gerätenummer, originalnummer, bemerkung, tüv, nichtVorhanden, options);
+                string wartungsprotokoll = reader.IsDBNull(8) ? string.Empty : reader.GetString(8);
+
+                Datensatz datensatz = new Datensatz(id, typ, gerätenummer, originalnummer, bemerkung, tüv, nichtVorhanden, options, wartungsprotokoll);
                 listDatensätze.Add(datensatz);
             }
             return listDatensätze;
