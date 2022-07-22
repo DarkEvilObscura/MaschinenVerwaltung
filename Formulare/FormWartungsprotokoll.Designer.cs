@@ -39,6 +39,8 @@
             this.fontDialog = new System.Windows.Forms.FontDialog();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelDatensatz = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelSpace = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelNoLogon = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -106,7 +108,9 @@
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabelDatensatz});
+            this.toolStripStatusLabelDatensatz,
+            this.toolStripStatusLabelSpace,
+            this.toolStripStatusLabelNoLogon});
             this.statusStrip.Location = new System.Drawing.Point(0, 428);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(800, 22);
@@ -118,6 +122,21 @@
             this.toolStripStatusLabelDatensatz.Name = "toolStripStatusLabelDatensatz";
             this.toolStripStatusLabelDatensatz.Size = new System.Drawing.Size(163, 17);
             this.toolStripStatusLabelDatensatz.Text = "toolStripStatusLabelDatensatz";
+            // 
+            // toolStripStatusLabelSpace
+            // 
+            this.toolStripStatusLabelSpace.Name = "toolStripStatusLabelSpace";
+            this.toolStripStatusLabelSpace.Size = new System.Drawing.Size(440, 17);
+            this.toolStripStatusLabelSpace.Spring = true;
+            // 
+            // toolStripStatusLabelNoLogon
+            // 
+            this.toolStripStatusLabelNoLogon.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripStatusLabelNoLogon.ForeColor = System.Drawing.Color.Red;
+            this.toolStripStatusLabelNoLogon.Image = global::MaschinenVerwaltung.Properties.Resources.warning;
+            this.toolStripStatusLabelNoLogon.Name = "toolStripStatusLabelNoLogon";
+            this.toolStripStatusLabelNoLogon.Size = new System.Drawing.Size(182, 17);
+            this.toolStripStatusLabelNoLogon.Text = "Keine Schreibberechtigung !";
             // 
             // FormWartungsprotokoll
             // 
@@ -158,5 +177,7 @@
         private System.Windows.Forms.FontDialog fontDialog;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelDatensatz;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelSpace;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelNoLogon;
     }
 }

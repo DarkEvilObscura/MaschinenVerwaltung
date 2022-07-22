@@ -12,7 +12,7 @@ namespace MaschinenVerwaltung {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.2.0.0")]
     internal sealed partial class UserSettings : global::System.Configuration.ApplicationSettingsBase {
         
         private static UserSettings defaultInstance = ((UserSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new UserSettings())));
@@ -164,6 +164,42 @@ namespace MaschinenVerwaltung {
             }
             set {
                 this["StayLogon"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Microsoft Sans Serif")]
+        public string Wartungsprotokoll_FontName {
+            get {
+                return ((string)(this["Wartungsprotokoll_FontName"]));
+            }
+            set {
+                this["Wartungsprotokoll_FontName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int Wartungsprotokoll_FontStyle {
+            get {
+                return ((int)(this["Wartungsprotokoll_FontStyle"]));
+            }
+            set {
+                this["Wartungsprotokoll_FontStyle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public float Wartungsprotokoll_FontSize {
+            get {
+                return ((float)(this["Wartungsprotokoll_FontSize"]));
+            }
+            set {
+                this["Wartungsprotokoll_FontSize"] = value;
             }
         }
     }

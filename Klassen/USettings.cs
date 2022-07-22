@@ -40,5 +40,23 @@ namespace MaschinenVerwaltung
             UserSettings.Default["StayLogon"] = login;
             UserSettings.Default.Save();
         }
+
+        public static Font GetWartungsprotokollFontStyle()
+        {
+            FontFamily family = new FontFamily(UserSettings.Default["Wartungsprotokoll_FontName"].ToString());
+            float fontSize = (float)UserSettings.Default["Wartungsprotokoll_FontSize"];
+            FontStyle style = (FontStyle)UserSettings.Default["Wartungsprotokoll_FontStyle"];
+
+            return new Font(family, fontSize, style);
+        }
+
+        public static void SetWartungsprotokollFontStyle(string fontName, FontStyle fontStyle, float fontSize)
+        {
+            UserSettings.Default["Wartungsprotokoll_FontName"] = fontName;
+            UserSettings.Default["Wartungsprotokoll_FontStyle"] = (int)fontStyle;
+            UserSettings.Default["Wartungsprotokoll_FontSize"] = fontSize;
+
+            UserSettings.Default.Save();
+        }
     }
 }

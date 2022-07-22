@@ -22,19 +22,28 @@ namespace MaschinenVerwaltung
 
         bool init = true;
 
+        Font wartungsprotokollFont;
+
         public FormWartungsprotokoll(Datensatz datensatz, bool login)
         {
             InitializeComponent();
             this.oldDatensatz = datensatz;
             this.login = login;
+            this.wartungsprotokollFont = USettings.GetWartungsprotokollFontStyle();
         }
 
         private void FormWartungsprotokoll_Load(object sender, EventArgs e)
         {
             this.wartungsprotokoll = this.oldDatensatz.Wartungsprotokoll;
+            
             richTextBox.Text = this.wartungsprotokoll;
-            toolStripStatusLabelDatensatz.Text = $"Typ: {this.oldDatensatz.Typ} | Gerätenummer: {this.oldDatensatz.Gerätenummer} | Originalnummer: {this.oldDatensatz.Originalnummer}";
+            richTextBox.Font = this.wartungsprotokollFont;
             richTextBox.ReadOnly = !this.login;
+
+            toolStripStatusLabelDatensatz.Text = $"Typ: {this.oldDatensatz.Typ} | Gerätenummer: {this.oldDatensatz.Gerätenummer} | Originalnummer: {this.oldDatensatz.Originalnummer}";
+            
+            toolStripStatusLabelNoLogon.Visible = !this.login;
+            
             this.init = false;
         }
 
@@ -50,6 +59,8 @@ namespace MaschinenVerwaltung
             {
                 this.init = true;
                 this.richTextBox.Font = dialog.Font;
+                this.wartungsprotokollFont = dialog.Font;
+                USettings.SetWartungsprotokollFontStyle(dialog.Font.Name, dialog.Font.Style, dialog.Font.Size);
             }
         }
 

@@ -69,7 +69,7 @@ namespace MaschinenVerwaltung
                 }
                 else if(i==8 || i==9 || i==10)
                 {
-                    dataGridView.Columns[i].Width = GetSize("btn", dataGridView.Font).Width;
+                    dataGridView.Columns[i].Width = GetSize("btnbtn", dataGridView.Font).Width;
                 }
                 else
                 {
