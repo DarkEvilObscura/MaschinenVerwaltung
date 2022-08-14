@@ -241,7 +241,16 @@ namespace MaschinenVerwaltung
             string oNr = (textBoxOriginalnummer.Text == "Originalnummer" ? string.Empty : textBoxOriginalnummer.Text);
             string bemerkung = (textBoxBemerkung.Text == "Bemerkung" ? string.Empty : textBoxBemerkung.Text);
             DateTime tüv = (!checkBoxNichtVorhanden.Checked && checkBoxTÜVDatum.Checked ? dateTimePickerTÜV.Value : DateTime.MinValue);
-            string tüvCustom = (tüv != DateTime.MinValue && tüv.Month < 10 ? "0" + tüv.Month.ToString() + "." + tüv.Year.ToString() : DateTime.MinValue.ToString());
+            
+            string tüvCustom;
+            if(tüv != DateTime.MinValue)
+            {
+                tüvCustom = (tüv.Month < 10 ? "0" : string.Empty) + tüv.Month.ToString() + "." + tüv.Year.ToString();
+            }
+            else
+            {
+                tüvCustom = DateTime.MinValue.ToString();
+            }
 
             Options options = new Options();
             options.ForeColor = (pictureBoxForeColor.BackColor != Color.Black) ? pictureBoxForeColor.BackColor : Color.Black;

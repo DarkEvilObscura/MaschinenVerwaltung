@@ -126,7 +126,7 @@ namespace MaschinenVerwaltung
         #region DML-Methoden
         public int Insert(Datensatz datensatz)
         {
-            string queryInsert = "INSERT INTO Maschinen(Typ, Gerätenummer, Originalnummer, Bemerkung, TÜV, NichtVorhanden, options) VALUES (@typ, @gerätenummer, @originalnummer, @bemerkung, @tüv, @nichtVorhanden, @options, @wartungsprotokoll);";
+            string queryInsert = "INSERT INTO Maschinen(Typ, Gerätenummer, Originalnummer, Bemerkung, TÜV, NichtVorhanden, options, Wartungsprotokoll) VALUES (@typ, @gerätenummer, @originalnummer, @bemerkung, @tüv, @nichtVorhanden, @options, @wartungsprotokoll);";
             this.sqLiteCommand = new SQLiteCommand(queryInsert, this.sqLiteConnection);
             this.sqLiteCommand.CommandType = CommandType.Text;
             this.sqLiteCommand.Parameters.AddWithValue("@typ", datensatz.Typ);

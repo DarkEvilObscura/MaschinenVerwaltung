@@ -160,12 +160,14 @@ namespace MaschinenVerwaltung
                 }
                 else if (e.ColumnIndex == 9) //Bearbeiten
                 {
-                    FormBearbeiten formBearbeiten = new FormBearbeiten(datensatz);
-                    formBearbeiten.ShowDialog();
-                    if (formBearbeiten.BearbeiteterDatensatz != null)
+                    using (FormBearbeiten formBearbeiten = new FormBearbeiten(datensatz))
                     {
-                        this.dbVerwaltung.Update(datensatz, formBearbeiten.BearbeiteterDatensatz);
-                        RefreshButton();
+                        formBearbeiten.ShowDialog();
+                        if (formBearbeiten.BearbeiteterDatensatz != null)
+                        {
+                            this.dbVerwaltung.Update(datensatz, formBearbeiten.BearbeiteterDatensatz);
+                            RefreshButton();
+                        }
                     }
                 }
                 else if(e.ColumnIndex == 10) //Löschen
@@ -299,9 +301,22 @@ namespace MaschinenVerwaltung
 
         private void toolStripButtonMaschineHinzufügen_Click(object sender, EventArgs e)
         {
-            FormHinzufügen formHinzufügen = new FormHinzufügen(ref this.dbVerwaltung, ref this.dataSet, ref this.dataGridView);
-            formHinzufügen.ShowDialog();
-            UpdateDataGridView();
+            using (FormHinzufügen formHinzufügen = new FormHinzufügen())
+            {
+                formHinzufügen.ShowDialog();
+                foreach (Datensatz item in formHinzufügen.NeueDatensätze)
+                {
+                    if (item.Typ == string.Empty && item.Gerätenummer == string.Empty && item.Originalnummer == string.Empty && item.Bemerkung == string.Empty && item.TÜV == DateTime.MinValue && item.NichtVorhanden == false)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        dbVerwaltung.Insert(item);
+                    }
+                }
+                UpdateDataGridView();
+            }
         }
 
         private void dataGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)

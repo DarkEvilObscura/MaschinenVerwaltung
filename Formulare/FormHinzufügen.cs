@@ -8,25 +8,26 @@ namespace MaschinenVerwaltung
 {
     public partial class FormHinzufügen : Form
     {
-        DatenbankVerwaltung verwaltung;
-        DataSet dataSet;
-        DataGridView form1DataGridView;
+        //DatenbankVerwaltung verwaltung;
+        //DataSet dataSet;
+        //DataGridView form1DataGridView;
 
-        List<Datensatz> datensätze;
+        public List<Datensatz> NeueDatensätze { get; private set; }
+
+        //List<Datensatz> datensätze;
 
         int rowIndex = 0;
 
-        public FormHinzufügen(ref DatenbankVerwaltung verwaltung, ref DataSet dataSet, ref DataGridView form1DataGridView)
+        public FormHinzufügen()
         {
             InitializeComponent();
-            this.verwaltung = verwaltung;
-            this.dataSet = dataSet;
-            this.form1DataGridView = form1DataGridView;
+
+            this.NeueDatensätze = new List<Datensatz>();
         }
 
         private void FormHinzufügen_Load(object sender, EventArgs e)
         {
-            this.datensätze = new List<Datensatz>();
+            //this.datensätze = new List<Datensatz>();
             Font font = USettings.GetSystemFontStyle();
             this.dataGridView.Font = font;
             monthCalendar.Font = font;
@@ -102,23 +103,9 @@ namespace MaschinenVerwaltung
                 else
                 {
                     Datensatz datensatz = new Datensatz(0, typ, gerätenummer, originalnummer, bemerkung, tüv, nichtVorhanden, options, string.Empty);
-                    this.datensätze.Add(datensatz);
+                    this.NeueDatensätze.Add(datensatz);
                 }
             }
-
-            foreach (Datensatz item in this.datensätze)
-            {
-                if (item.Typ == string.Empty && item.Gerätenummer == string.Empty && item.Originalnummer == string.Empty && item.Bemerkung == string.Empty && item.TÜV == DateTime.MinValue && item.NichtVorhanden == false)
-                {
-                    continue;
-                }
-                else
-                {
-                    //this.dataSet.Tables[0].Rows.Add(item.Id);
-                    this.verwaltung.Insert(item);
-                }
-            }
-            //this.dataSet.AcceptChanges();
             ActiveForm.Close();
         }
 
