@@ -435,7 +435,7 @@ namespace MaschinenVerwaltung
             RefreshButton();
         }
 
-        private void toolStripTextBoxSearch_KeyPress(object sender, KeyPressEventArgs e)
+        private void toolStripButtonPrint_Click(object sender, EventArgs e)
         {
 
         }
