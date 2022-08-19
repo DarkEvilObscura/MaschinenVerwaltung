@@ -465,5 +465,37 @@ namespace MaschinenVerwaltung
             }
             return table;
         }
+
+        public List<Datensatz> ConvertTableToList(DataTable table)
+        {
+            List<Datensatz> listDatensätze = new List<Datensatz>();
+            Datensatz datensatz;
+
+            for (int i = 0; i < table.Rows.Count; i++)
+            {
+                int id = (int)table.Rows[i].ItemArray.GetValue(0);
+                string typ = table.Rows[i].ItemArray.GetValue(1).ToString();
+                string gerätenummer = table.Rows[i].ItemArray.GetValue(2).ToString();
+                string originalnummer = table.Rows[i].ItemArray.GetValue(3).ToString();
+                string bemerkung = table.Rows[i].ItemArray.GetValue(4).ToString();
+                DateTime tüv;
+                try
+                {
+                    tüv = DateTime.Parse(table.Rows[i].ItemArray.GetValue(5).ToString());
+                }
+                catch (InvalidCastException)
+                {
+                    tüv = DateTime.MinValue;
+                }
+                
+                bool nichtVorhanden = Convert.ToBoolean(table.Rows[i].ItemArray.GetValue(6));
+                string xmlOptions = table.Rows[i].ItemArray.GetValue(7).ToString();
+
+                datensatz = new Datensatz(id, typ, gerätenummer, originalnummer, bemerkung, tüv, nichtVorhanden, new Options().DeserializeOptions(xmlOptions), null);
+                listDatensätze.Add(datensatz);
+            }
+
+            return listDatensätze;
+        }
     }
 }

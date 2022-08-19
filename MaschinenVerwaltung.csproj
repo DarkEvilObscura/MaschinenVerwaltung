@@ -114,6 +114,7 @@
       <DependentUpon>FormLogin.cs</DependentUpon>
     </Compile>
     <Compile Include="Klassen\DatenbankVerwaltung.cs" />
+    <Compile Include="Klassen\Drucken.cs" />
     <Compile Include="Klassen\Export.cs" />
     <Compile Include="Klassen\Options.cs" />
     <Compile Include="Klassen\Datensatz.cs" />

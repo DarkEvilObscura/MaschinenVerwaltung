@@ -243,11 +243,9 @@ namespace MaschinenVerwaltung
 
         private void AskToSave()
         {
-            DialogResult msg = MessageBox.Show("Möchten Sie speichern, bevor die Anwendung geschlossen wird ?", "MaschinenVerwaltung", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult msg = MessageBox.Show("Möchten die Anwendung geschlossen wird ?", "MaschinenVerwaltung", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if(msg==DialogResult.Yes)
             {
-                //TODO: Alles speichern (UserSettings, Datenbank)
-
                 this.dbVerwaltung.Close();
             }
         }
@@ -437,12 +435,30 @@ namespace MaschinenVerwaltung
 
         private void toolStripButtonPrint_Click(object sender, EventArgs e)
         {
+            string typ = (toolStripComboBoxMaschinenListe.Text == "Nur TÜV-Abgelaufene Maschinen" ? "TÜV" : toolStripComboBoxMaschinenListe.Text);
+            DataTable table = dbVerwaltung.GetMaschinen(typ == "Nur TÜV-Abgelaufene Maschinen" ? "TÜVMaschinen" : typ);
 
-        }
+            List<Datensatz> datensätze = dbVerwaltung.ConvertTableToList(table);
 
-        private void toolStripTextBoxSearch_TextChanged(object sender, EventArgs e)
-        {
-            (dataGridView.DataSource as DataTable).DefaultView.RowFilter = string.Format("Field = '{0}'", toolStripTextBoxSearch.Text);
+            //Options options = new Options();
+            //options.BackgroundColor = Color.Red;
+            //options.ForeColor = Color.Green;
+
+            //string xml = options.SerializeOptions(options);
+
+            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
+            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
+            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, options.DeserializeOptions(xml), string.Empty));
+            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
+            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
+            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
+            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, options.DeserializeOptions(xml), string.Empty));
+            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
+            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
+            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
+
+            Drucken drucken = new Drucken(typ, datensätze);
+            drucken.Print();
         }
 
         //private void toolStripButtonDayNightMode_Click(object sender, EventArgs e)

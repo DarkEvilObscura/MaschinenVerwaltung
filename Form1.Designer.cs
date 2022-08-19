@@ -49,7 +49,7 @@
             this.toolStripButtonMaschineHinzufügen = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonMaschineSuchen = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonRefresh = new System.Windows.Forms.ToolStripButton();
-            this.toolStripTextBoxSearch = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripButtonPrint = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel_AnzahlMaschinen = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -110,27 +110,28 @@
             // 
             this.loginToolStripMenuItem.Image = global::MaschinenVerwaltung.Properties.Resources.key;
             this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
-            this.loginToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.loginToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loginToolStripMenuItem.Text = "Login";
             this.loginToolStripMenuItem.Click += new System.EventHandler(this.loginToolStripMenuItem_Click);
             // 
             // exportierenToolStripMenuItem
             // 
+            this.exportierenToolStripMenuItem.Enabled = false;
             this.exportierenToolStripMenuItem.Image = global::MaschinenVerwaltung.Properties.Resources.excel;
             this.exportierenToolStripMenuItem.Name = "exportierenToolStripMenuItem";
-            this.exportierenToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.exportierenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exportierenToolStripMenuItem.Text = "Exportieren";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(131, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // beendenToolStripMenuItem
             // 
             this.beendenToolStripMenuItem.Image = global::MaschinenVerwaltung.Properties.Resources.exit;
             this.beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
-            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.beendenToolStripMenuItem.Text = "Beenden";
             this.beendenToolStripMenuItem.Click += new System.EventHandler(this.beendenToolStripMenuItem_Click);
             // 
@@ -189,7 +190,7 @@
             this.toolStripButtonMaschineHinzufügen,
             this.toolStripButtonMaschineSuchen,
             this.toolStripButtonRefresh,
-            this.toolStripTextBoxSearch});
+            this.toolStripButtonPrint});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(894, 25);
@@ -250,18 +251,14 @@
             this.toolStripButtonRefresh.Text = "Aktualisieren";
             this.toolStripButtonRefresh.Click += new System.EventHandler(this.toolStripButtonRefresh_Click);
             // 
-            // toolStripTextBoxSearch
+            // toolStripButtonPrint
             // 
-            this.toolStripTextBoxSearch.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripTextBoxSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.toolStripTextBoxSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.toolStripTextBoxSearch.Name = "toolStripTextBoxSearch";
-            this.toolStripTextBoxSearch.Size = new System.Drawing.Size(150, 25);
-            this.toolStripTextBoxSearch.Text = "Suchbegriff";
-            this.toolStripTextBoxSearch.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.toolStripTextBoxSearch.Visible = false;
-            this.toolStripTextBoxSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.toolStripTextBoxSearch_KeyPress);
-            this.toolStripTextBoxSearch.TextChanged += new System.EventHandler(this.toolStripTextBoxSearch_TextChanged);
+            this.toolStripButtonPrint.Image = global::MaschinenVerwaltung.Properties.Resources.printer;
+            this.toolStripButtonPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonPrint.Name = "toolStripButtonPrint";
+            this.toolStripButtonPrint.Size = new System.Drawing.Size(71, 22);
+            this.toolStripButtonPrint.Text = "Drucken";
+            this.toolStripButtonPrint.Click += new System.EventHandler(this.toolStripButtonPrint_Click);
             // 
             // statusStrip
             // 
@@ -342,7 +339,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_AnzahlMaschinen;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelEingeloggt;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBoxSearch;
+        private System.Windows.Forms.ToolStripButton toolStripButtonPrint;
     }
 }
 
