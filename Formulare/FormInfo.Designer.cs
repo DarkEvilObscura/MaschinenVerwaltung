@@ -55,9 +55,9 @@ namespace MaschinenVerwaltung
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(169, 37);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(69, 13);
+            this.label2.Size = new System.Drawing.Size(60, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Version 1.1.1";
+            this.label2.Text = "Version 1.2";
             // 
             // label3
             // 

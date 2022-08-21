@@ -435,29 +435,13 @@ namespace MaschinenVerwaltung
 
         private void toolStripButtonPrint_Click(object sender, EventArgs e)
         {
-            string typ = (toolStripComboBoxMaschinenListe.Text == "Nur TÜV-Abgelaufene Maschinen" ? "TÜV" : toolStripComboBoxMaschinenListe.Text);
-            DataTable table = dbVerwaltung.GetMaschinen(typ == "Nur TÜV-Abgelaufene Maschinen" ? "TÜVMaschinen" : typ);
+            string typ = toolStripComboBoxMaschinenListe.Text;
+            //dbVerwaltung.GetMaschinen(typ == "Nur TÜV-Abgelaufene Maschinen" ? "TÜVMaschinen" : typ);
+            DataTable table = (toolStripComboBoxMaschinenListe.SelectedIndex == 11 ? dbVerwaltung.GetTÜVGeräte() : dbVerwaltung.GetMaschinen(typ));
 
             List<Datensatz> datensätze = dbVerwaltung.ConvertTableToList(table);
 
-            //Options options = new Options();
-            //options.BackgroundColor = Color.Red;
-            //options.ForeColor = Color.Green;
-
-            //string xml = options.SerializeOptions(options);
-
-            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
-            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
-            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, options.DeserializeOptions(xml), string.Empty));
-            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
-            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
-            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
-            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, options.DeserializeOptions(xml), string.Empty));
-            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
-            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
-            //datensätze.Add(new Datensatz(0, "4070", "9999", "4720", "sdfgydfg", DateTime.Now, false, null, string.Empty));
-
-            Drucken drucken = new Drucken(typ, datensätze);
+            Drucken drucken = new Drucken(toolStripComboBoxMaschinenListe.SelectedIndex == 11 ? "TÜV" : typ, datensätze);
             drucken.Print();
         }
 
