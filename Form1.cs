@@ -43,6 +43,7 @@ namespace MaschinenVerwaltung
             this.toolStripButtonMaschineHinzufügen.Font = this.systemFont;
             this.toolStripButtonMaschineSuchen.Font = this.systemFont;
             this.toolStripButtonRefresh.Font = this.systemFont;
+            this.toolStripButtonPrint.Font = this.systemFont;
             this.dataGridView.Font = this.systemFont;
 
             if (USettings.GetLogonStatus())
@@ -286,6 +287,7 @@ namespace MaschinenVerwaltung
                 this.toolStripButtonMaschineHinzufügen.Font = this.systemFont; //dialog.Font;
                 this.toolStripButtonMaschineSuchen.Font = this.systemFont; //dialog.Font;
                 this.toolStripButtonRefresh.Font = this.systemFont; //dialog.Font;
+                this.toolStripButtonPrint.Font = this.systemFont;
                 this.dataGridView.Font = this.systemFont; //dialog.Font;
             }
         }
@@ -437,7 +439,32 @@ namespace MaschinenVerwaltung
         {
             string typ = toolStripComboBoxMaschinenListe.Text;
             //dbVerwaltung.GetMaschinen(typ == "Nur TÜV-Abgelaufene Maschinen" ? "TÜVMaschinen" : typ);
-            DataTable table = (toolStripComboBoxMaschinenListe.SelectedIndex == 11 ? dbVerwaltung.GetTÜVGeräte() : dbVerwaltung.GetMaschinen(typ));
+
+            DatenbankVerwaltung.Kategorie kategorie = DatenbankVerwaltung.Kategorie.Gerätenummer;
+
+            if(this.dataGridView.SortedColumn != null)
+            {
+                switch(this.dataGridView.SortedColumn.HeaderText)
+                {
+                    case "Typ":
+                        kategorie = DatenbankVerwaltung.Kategorie.Typ;
+                        break;
+                    case "Gerätenummer":
+                        kategorie = DatenbankVerwaltung.Kategorie.Gerätenummer;
+                        break;
+                    case "Originalnummer":
+                        kategorie = DatenbankVerwaltung.Kategorie.Originalnummer;
+                        break;
+                    case "Bemerkung":
+                        kategorie = DatenbankVerwaltung.Kategorie.Bemerkung;
+                        break;
+                    case "TÜV":
+                        kategorie = DatenbankVerwaltung.Kategorie.TÜV;
+                        break;
+                }
+            }
+
+            DataTable table = toolStripComboBoxMaschinenListe.SelectedIndex == 11 ? dbVerwaltung.GetTÜVGeräte(DatenbankVerwaltung.Kategorie.TÜV, this.dataGridView.SortOrder) : dbVerwaltung.GetMaschinen(typ, kategorie, this.dataGridView.SortOrder);
 
             List<Datensatz> datensätze = dbVerwaltung.ConvertTableToList(table);
 

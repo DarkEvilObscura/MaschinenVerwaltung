@@ -12,12 +12,13 @@ namespace MaschinenVerwaltung
 {
     class Drucken
     {
-        static PrintDocument printDocument = new PrintDocument();
+        PrintDocument printDocument;
+        PrintPreviewDialog previewDialog;
 
         string title = string.Empty;
         List<Datensatz> datensätze = new List<Datensatz>();
 
-        static List<Tuple<string, Size>> listHeaders = new List<Tuple<string, Size>>();
+        List<Tuple<string, Size>> listHeaders;
 
         int maxWidth = 0;
 
@@ -28,10 +29,15 @@ namespace MaschinenVerwaltung
 
         public Drucken(string typ, List<Datensatz> datensätze)
         {
-            printDocument.PrintPage += PrintDocument_PrintPage;
-
             this.title = typ;
             this.datensätze = datensätze;
+
+            this.printDocument = new PrintDocument();
+            printDocument.PrintPage += PrintDocument_PrintPage;
+
+            this.previewDialog = new PrintPreviewDialog();
+
+            this.listHeaders = new List<Tuple<string, Size>>();
 
             Prepare();
         }
@@ -202,18 +208,24 @@ namespace MaschinenVerwaltung
 
         public void Print()
         {
-            try
+            previewDialog.Document = printDocument;
+            DialogResult dialogResult = previewDialog.ShowDialog();
+            if(dialogResult == DialogResult.OK)
             {
-                printDocument.Print();
+                try
+                {
+                    printDocument.Print();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\n\nSchließen Sie alle Programme die auf das Dokument zugreifen.");
+                }
+                finally
+                {
+                    printDocument.Dispose();
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n\nSchließen Sie alle Programme die auf das Dokument zugreifen.");
-            }
-            finally
-            {
-                printDocument.Dispose();
-            }
+            previewDialog.Document = null;
         }
     }
 }

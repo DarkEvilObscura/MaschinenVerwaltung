@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace MaschinenVerwaltung
@@ -23,6 +24,15 @@ namespace MaschinenVerwaltung
             Gerätenummer,
             Originalnummer,
             Bemerkung
+        }
+
+        public enum Kategorie
+        {
+            Typ,
+            Gerätenummer,
+            Originalnummer,
+            Bemerkung,
+            TÜV
         }
 
         public DatenbankVerwaltung()
@@ -211,11 +221,12 @@ namespace MaschinenVerwaltung
         #endregion
 
         #region DQL-Methoden
-        public DataTable GetMaschinen(string maschinenTyp)
+        public DataTable GetMaschinen(string maschinenTyp, Kategorie kategorie = Kategorie.Gerätenummer /*string sortedColumnHeaderText = "Gerätenummer"*/, SortOrder sortOrder = SortOrder.Ascending)
         {
             DataTable table = new Tabelle().SetHeader((maschinenTyp=="*") ? "Maschinen" : maschinenTyp);
 
-            string queryMaschinen = "SELECT * FROM Maschinen " + (maschinenTyp == "*" ? "ORDER BY Typ" : $"WHERE Typ=\"{maschinenTyp}\" ORDER BY Gerätenummer") + " asc";
+            //string queryMaschinen = "SELECT * FROM Maschinen " + (maschinenTyp == "*" ? "ORDER BY Typ" : $"WHERE Typ=\"{maschinenTyp}\" ORDER BY Gerätenummer") + " asc";
+            string queryMaschinen = "SELECT * FROM Maschinen " + (maschinenTyp == "*" ? "ORDER BY" : $"WHERE Typ=\"{maschinenTyp}\" ORDER BY") + GetSQLOrderByAscDes(kategorie, sortOrder);
             this.sqLiteCommand = new SQLiteCommand(queryMaschinen, this.sqLiteConnection);
             List<Datensatz> listDatensätze = ExecReader();
             table.Merge(ConvertListToTable(listDatensätze, "Maschinen"));
@@ -223,11 +234,12 @@ namespace MaschinenVerwaltung
             return table;
         }
 
-        public DataTable GetTÜVGeräte()
+        public DataTable GetTÜVGeräte(Kategorie kategorie = Kategorie.Typ, SortOrder sortOrder = SortOrder.Ascending)
         {
             DataTable table = new Tabelle().SetHeader("TÜVMaschinen");
 
-            string queryTÜV = "SELECT * FROM TÜV;";
+            //string queryTÜV = "SELECT * FROM TÜV;";
+            string queryTÜV = "SELECT * FROM TÜV ORDER BY " + GetSQLOrderByAscDes(kategorie, sortOrder);
             this.sqLiteCommand = new SQLiteCommand(queryTÜV, this.sqLiteConnection);
             List<Datensatz> listDatensätze = ExecReader();
             return ConvertListToTable(listDatensätze, "TÜVMaschinen");
@@ -496,6 +508,43 @@ namespace MaschinenVerwaltung
             }
 
             return listDatensätze;
+        }
+
+        private string GetSQLOrderByAscDes(Kategorie kategorie, SortOrder sortOrder)
+        {
+            string sortedColumnHeaderText = string.Empty;
+            string columnHeaderAscDesc = string.Empty;
+
+            switch (kategorie)
+            {
+                case Kategorie.Typ:
+                    sortedColumnHeaderText = " Typ";
+                    break;
+                case Kategorie.Gerätenummer:
+                    sortedColumnHeaderText = " Gerätenummer";
+                    break;
+                case Kategorie.Originalnummer:
+                    sortedColumnHeaderText = " Originalnummer";
+                    break;
+                case Kategorie.Bemerkung:
+                    sortedColumnHeaderText = " Bemerkung";
+                    break;
+                case Kategorie.TÜV:
+                    sortedColumnHeaderText = " TÜV";
+                    break;
+            }
+
+            switch (sortOrder)
+            {
+                case SortOrder.Ascending:
+                    columnHeaderAscDesc = " asc";
+                    break;
+                case SortOrder.Descending:
+                    columnHeaderAscDesc = " desc";
+                    break;
+            }
+
+            return sortedColumnHeaderText + columnHeaderAscDesc + ";";
         }
     }
 }
