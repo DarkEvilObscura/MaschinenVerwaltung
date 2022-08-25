@@ -20,6 +20,8 @@ namespace MaschinenVerwaltung
 
         List<Tuple<string, Size>> listHeaders;
 
+        readonly Size paperSize = new Size(830, 1170);
+
         int maxWidth = 0;
 
         int datensatzIndex = 0;
@@ -65,6 +67,7 @@ namespace MaschinenVerwaltung
                 }
                 else
                 {
+                    //maximale Breite aller Spaltenköpfe zusammen
                     this.maxWidth += (!item.Item2.IsEmpty ? item.Item2.Width : 0);
                 }
             }
@@ -72,7 +75,7 @@ namespace MaschinenVerwaltung
 
         private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
-            e.PageSettings.PaperSize = new PaperSize("A4", 830, 1170);
+            e.PageSettings.PaperSize = new PaperSize("A4", this.paperSize.Width, this.paperSize.Height);
 
             PrintHeader(e);
             PrintList(e);
@@ -84,7 +87,10 @@ namespace MaschinenVerwaltung
             int offsetY = 100;
 
             //Title
-            e.Graphics.DrawString(this.title, new Font(new FontFamily("Calibri"), 40f, FontStyle.Bold), Brushes.Black, new PointF(350f, 10f));
+            Size sTitle = Utils.GetSize(this.title, new Font(new FontFamily("Calibri"), 40f, FontStyle.Bold));
+            float xTitle = (this.paperSize.Width / 2) - (sTitle.Width / 2);
+
+            e.Graphics.DrawString(this.title, new Font(new FontFamily("Calibri"), 40f, FontStyle.Bold), Brushes.Black, new PointF(xTitle, 10f)); //new PointF(350f, 10f));
 
             //Spalten
             foreach (Tuple<string, Size> item in listHeaders)
