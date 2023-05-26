@@ -38,7 +38,7 @@ namespace MaschinenVerwaltung
             printDocument.PrintPage += PrintDocument_PrintPage;
 
             this.previewDialog = new PrintPreviewDialog();
-
+            
             this.listHeaders = new List<Tuple<string, Size>>();
 
             Prepare();
@@ -76,7 +76,7 @@ namespace MaschinenVerwaltung
         private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
             e.PageSettings.PaperSize = new PaperSize("A4", this.paperSize.Width, this.paperSize.Height);
-
+            
             PrintHeader(e);
             PrintList(e);
         }
@@ -214,24 +214,29 @@ namespace MaschinenVerwaltung
 
         public void Print()
         {
-            previewDialog.Document = printDocument;
-            DialogResult dialogResult = previewDialog.ShowDialog();
-            if(dialogResult == DialogResult.OK)
-            {
-                try
-                {
-                    printDocument.Print();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message + "\n\nSchließen Sie alle Programme die auf das Dokument zugreifen.");
-                }
-                finally
-                {
-                    printDocument.Dispose();
-                }
-            }
+            printDocument.Print();
+
+            //previewDialog.Document = printDocument;
+
+            //DialogResult dialogResult = previewDialog.ShowDialog();
+            //if(dialogResult == DialogResult.OK)
+            //{
+            //    previewDialog.Close();
+            //    previewDialog.Document.Print();
+            //}
+
+            CleanUp();
+        }
+
+        private void CleanUp()
+        {
+            this.title = null; //this.title = string.Empty;
+            datensätze = null;
+            this.listHeaders = null; //this.listHeaders.Clear();
             previewDialog.Document = null;
+            printDocument = null;
+
+            GC.Collect();
         }
     }
 }

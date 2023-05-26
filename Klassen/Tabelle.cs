@@ -12,7 +12,7 @@ namespace MaschinenVerwaltung
 
         public DataTable SetHeader(string tableName)
         {
-            string[] columnHeader = new string[8] { "id", "Typ", "Geräte\nnummer", "Original\nnummer", "Bemerkung", "TÜV", "Nicht\nvorhanden", "options" };
+            string[] columnHeader = new string[8] { "id", "Typ", "Geräte\nnummer", "Original\nnummer", "Bemerkung", "TÜV", /*"Nicht\nvorhanden"*/ "n.V.", "options" };
             DataTable table = new DataTable(tableName);
             for (int i = 0; i < columnHeader.Length; i++)
             {
@@ -48,7 +48,8 @@ namespace MaschinenVerwaltung
             dataRow["Original\nnummer"] = datensatz.Originalnummer;
             dataRow["Bemerkung"] = datensatz.Bemerkung;
             dataRow["TÜV"] = datensatz.TÜV;
-            dataRow["Nicht\nvorhanden"] = datensatz.NichtVorhanden;
+            //dataRow["Nicht\nvorhanden"] = datensatz.NichtVorhanden;
+            dataRow["n.V."] = datensatz.NichtVorhanden;
             dataRow["options"] = datensatz.Options.SerializeOptions(datensatz.Options);
 
             table.Rows.Add(dataRow);

@@ -69,13 +69,13 @@ namespace MaschinenVerwaltung
             switch (comboBoxSuchkriterium.SelectedIndex)
             {
                 case 0: //Gerätenummer
-                    tableSuchergebnisse = this.datenbankVerwaltung.Suchen(textBoxSuchen.Text.ToUpper(), DatenbankVerwaltung.SuchKategorie.Gerätenummer);
+                    tableSuchergebnisse = this.datenbankVerwaltung.Suchen(textBoxSuchen.Text.ToUpper(), DatenbankVerwaltung.Kategorie.Gerätenummer);
                     break;
                 case 1: //Originalnummer
-                    tableSuchergebnisse = this.datenbankVerwaltung.Suchen(textBoxSuchen.Text.ToUpper(), DatenbankVerwaltung.SuchKategorie.Originalnummer);
+                    tableSuchergebnisse = this.datenbankVerwaltung.Suchen(textBoxSuchen.Text.ToUpper(), DatenbankVerwaltung.Kategorie.Originalnummer);
                     break;
                 case 2: //Bemerkung
-                    tableSuchergebnisse = this.datenbankVerwaltung.Suchen(textBoxSuchen.Text.ToUpper(), DatenbankVerwaltung.SuchKategorie.Bemerkung); //Suchen(textBoxSuchen.Text.ToUpper(), false, false, true);
+                    tableSuchergebnisse = this.datenbankVerwaltung.Suchen(textBoxSuchen.Text.ToUpper(), DatenbankVerwaltung.Kategorie.Bemerkung); //Suchen(textBoxSuchen.Text.ToUpper(), false, false, true);
                     break;
                 case 3: //Mit TÜV-Datum
                     tableSuchergebnisse = this.datenbankVerwaltung.Suchen(dateTimePickerTÜV1.Value);

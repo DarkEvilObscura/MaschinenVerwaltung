@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
@@ -19,12 +21,7 @@ namespace MaschinenVerwaltung
 
         ConnectionState state = ConnectionState.Closed;
 
-        public enum SuchKategorie
-        {
-            Gerätenummer,
-            Originalnummer,
-            Bemerkung
-        }
+        readonly List<DataTable> dataTables = new List<DataTable>();
 
         public enum Kategorie
         {
@@ -221,7 +218,7 @@ namespace MaschinenVerwaltung
         #endregion
 
         #region DQL-Methoden
-        public DataTable GetMaschinen(string maschinenTyp, Kategorie kategorie = Kategorie.Gerätenummer /*string sortedColumnHeaderText = "Gerätenummer"*/, SortOrder sortOrder = SortOrder.Ascending)
+        public DataTable GetMaschinen(string maschinenTyp, Kategorie kategorie = Kategorie.Gerätenummer, SortOrder sortOrder = SortOrder.Ascending)
         {
             DataTable table = new Tabelle().SetHeader((maschinenTyp=="*") ? "Maschinen" : maschinenTyp);
 
@@ -238,11 +235,12 @@ namespace MaschinenVerwaltung
         {
             DataTable table = new Tabelle().SetHeader("TÜVMaschinen");
 
-            //string queryTÜV = "SELECT * FROM TÜV;";
             string queryTÜV = "SELECT * FROM TÜV ORDER BY " + GetSQLOrderByAscDes(kategorie, sortOrder);
             this.sqLiteCommand = new SQLiteCommand(queryTÜV, this.sqLiteConnection);
             List<Datensatz> listDatensätze = ExecReader();
-            return ConvertListToTable(listDatensätze, "TÜVMaschinen");
+            table.Merge(ConvertListToTable(listDatensätze, "TÜVMaschinen"));
+
+            return table;
         }
 
         public Datensatz GetSingleDatensatz(int datensatzId)
@@ -253,7 +251,6 @@ namespace MaschinenVerwaltung
 
 
             this.sqLiteCommand.CommandType = CommandType.Text;
-            //this.sqLiteCommand.Parameters.AddWithValue("@id", datensatzId);
             SQLiteDataReader reader = this.sqLiteCommand.ExecuteReader();
             while (reader.Read())
             {
@@ -306,57 +303,49 @@ namespace MaschinenVerwaltung
             return -1;
         }
 
-        public DataTable Suchen(string suchText, SuchKategorie kategorie)
+        public List<string> GetMaschinenTypen()
+        {
+            List<string> listTypen = new List<string>();
+
+            string query = "SELECT DISTINCT(Typ) FROM Maschinen;";
+            this.sqLiteCommand = new SQLiteCommand(query, this.sqLiteConnection);
+            this.sqLiteCommand.CommandType = CommandType.Text;
+            SQLiteDataReader reader = this.sqLiteCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                listTypen.Add(reader.GetString(0));
+            }
+            return listTypen;
+        }
+
+        public DataTable Suchen(string suchText, Kategorie kategorie)
         {
             //DataTable tableSuchergebnisse = new Tabelle().SetHeader("Suchergebnisse");
             string k = string.Empty;
-            if(kategorie==SuchKategorie.Gerätenummer)
+            switch (kategorie)
             {
-                k = "Gerätenummer";
+                case Kategorie.Typ:
+                    return null;
+                case Kategorie.Gerätenummer:
+                    k = "Gerätenummer";
+                    break;
+                case Kategorie.Originalnummer:
+                    k = "Originalnummer";
+                    break;
+                case Kategorie.Bemerkung:
+                    k = "Bemerkung";
+                    break;
+                case Kategorie.TÜV:
+                    return null;
+                default:
+                    return null;
             }
-            else if(kategorie==SuchKategorie.Originalnummer)
-            {
-                k = "Originalnummer";
-            }
-            else if(kategorie==SuchKategorie.Bemerkung)
-            {
-                k = "Bemerkung";
-            }
+
             string query = $"SELECT * FROM Maschinen WHERE {k} LIKE '%{suchText}%'";
             this.sqLiteCommand = new SQLiteCommand(query, this.sqLiteConnection);
             //this.sqLiteCommand.CommandType = CommandType.Text;
             List<Datensatz> datensätze = ExecReader();
             return ConvertListToTable(datensätze, "Suchergebnisse");
-
-
-                //SQLiteDataReader reader = this.sqLiteCommand.ExecuteReader();
-                //while (reader.Read())
-                //{
-                //    int id = reader.GetInt32(0);
-                //    string typ = reader.GetString(1);
-                //    string gerätenummer = reader.GetString(2);
-                //    string originalnummer = reader.GetString(3);
-                //    string bemerkung = reader.GetString(4);
-                //    DateTime tüv = (reader.GetString(5).Length > 0 ? new DateTime(DateTime.Parse(reader.GetString(5)).Year, DateTime.Parse(reader.GetString(5)).Month, DateTime.Parse(reader.GetString(5)).Day) : new DateTime(DateTime.MinValue.Year, DateTime.MinValue.Month, DateTime.MinValue.Day));
-                //    bool nichtVorhanden = Convert.ToBoolean(reader.GetValue(6)); //Convert.ToBoolean(reader.GetInt32(6));
-                //    string xmlOptions = reader.GetString(7);
-
-            //    Options options = new Options();
-            //    if (xmlOptions.Length > 0)
-            //    {
-            //        options = options.DeserializeOptions(xmlOptions);
-            //    }
-            //    else
-            //    {
-            //        options.BackgroundColor = Color.White;
-            //        options.ForeColor = Color.Black;
-            //    }
-
-            //    Datensatz datensatz = new Datensatz(id, typ, gerätenummer, originalnummer, bemerkung, tüv, nichtVorhanden, options);
-            //    tableSuchergebnisse = new Tabelle().SetRow(tableSuchergebnisse, datensatz);
-            //}
-
-            //return tableSuchergebnisse;
         }
 
         public DataTable Suchen(DateTime tüv)
@@ -403,7 +392,7 @@ namespace MaschinenVerwaltung
             {
                 foreach (Datensatz item in datensätze)
                 {
-                    if(item.Options.ForeColor == color)
+                    if(item.Options.ForeColorARGB == color.ToArgb())
                     {
                         listColorDatensätze.Add(item);
                     }
@@ -413,7 +402,7 @@ namespace MaschinenVerwaltung
             {
                 foreach (Datensatz item in datensätze)
                 {
-                    if(item.Options.BackgroundColor == color)
+                    if (item.Options.BackgroundColorARGB == color.ToArgb())
                     {
                         listColorDatensätze.Add(item);
                     }

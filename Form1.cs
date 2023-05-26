@@ -14,8 +14,6 @@ namespace MaschinenVerwaltung
         DatenbankVerwaltung dbVerwaltung;
         DataSet dataSet;
 
-        string[] typen = new string[11] { "4070", "5190", "6080", "7081", "8080", "Art.S", "Breva", "Centura", "Prima Advance", "S3", "S4" };
-
         string currentTable = string.Empty;
 
         bool login = false;
@@ -113,7 +111,7 @@ namespace MaschinenVerwaltung
             DataTable table = new Tabelle().SetHeader("Maschinen");
             table = this.dbVerwaltung.GetMaschinen("*"); //Tabelle wird benötigt zum suchen, nicht löschen !
             this.dataSet.Tables.Add(table);
-            foreach (string item in this.typen)
+            foreach (string item in this.dbVerwaltung.GetMaschinenTypen())
             {
                 table = new Tabelle().SetHeader(item);
                 table = this.dbVerwaltung.GetMaschinen(item);
@@ -129,7 +127,7 @@ namespace MaschinenVerwaltung
             this.dataSet.Tables.Clear();
             this.dataSet.Clear();
             DataTable table;
-            foreach (string item in this.typen)
+            foreach (string item in this.dbVerwaltung.GetMaschinenTypen())
             {
                 table = new Tabelle().SetHeader(item);
                 table = this.dbVerwaltung.GetMaschinen(item);
